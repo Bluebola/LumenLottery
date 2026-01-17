@@ -43,6 +43,19 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b2b386d7-1cdc-4be3-987b-7a905a9b384b"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b2b386d7-1cdc-4be3-987b-7a905a9b384b"
+    },
+    "owner": "bluebola"
   }
 }

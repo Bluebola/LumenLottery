@@ -201,7 +201,7 @@ export default function HomeScreen() {
               </View>
               
               <Text style={styles.footerTitle}>LUMEN LOTTERY</Text>
-              <Text style={styles.footerEvent}>Hack&Roll 2025</Text>
+              <Text style={styles.footerEvent}>Hack&Roll 2026</Text>
               
               <View style={styles.footerTagline}>
                 <Text style={styles.footerTaglineText}>
@@ -215,7 +215,7 @@ export default function HomeScreen() {
                 <Text style={styles.footerMadeWith}>and questionable decisions</Text>
               </View>
               
-              <Text style={styles.footerCopyright}>© 2025 Team Lumen Lottery</Text>
+              <Text style={styles.footerCopyright}>© 2026 Team Lumen Lottery</Text>
             </View>
           </LinearGradient>
         </View>

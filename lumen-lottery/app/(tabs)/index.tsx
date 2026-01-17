@@ -79,6 +79,7 @@ const GAME_CATEGORIES = [
     title: '🔊 Sensory Crossovers',
     subtitle: 'Why does this exist?',
     games: [
+      { id: 'voice', name: 'Voice Shout', emoji: '🎤', desc: 'SCREAM for brightness!', color: '#e74c3c' },
       { id: 'clap', name: 'Clap-to-Brighten', emoji: '👏', desc: 'Mic controls brightness', color: '#3498db' },
       { id: 'scroll', name: 'Scroll Wheel', emoji: '🖱️', desc: 'Scroll speed = brightness', color: '#8e44ad' },
       { id: 'typeracer', name: 'Type Racer', emoji: '⌨️', desc: 'WPM = brightness', color: '#2ecc71' },

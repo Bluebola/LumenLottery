@@ -56,6 +56,7 @@ const GAME_CATEGORIES = [
       { id: 'countdown', name: 'Countdown to Light', emoji: '⏳', desc: 'Touch anything = reset', color: '#d35400' },
       { id: 'hold', name: 'Hold-to-Glow', emoji: '👆', desc: 'Release = back to zero', color: '#c0392b' },
       { id: 'afk', name: 'AFK Brightness', emoji: '💤', desc: "Don't move = brightness", color: '#34495e' },
+      { id: 'freezeframe', name: 'Freeze Frame', emoji: '🧳', desc: 'Stay still for brightness!', color: '#3498db' },
     ]
   },
   {

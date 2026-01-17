@@ -1,7 +1,7 @@
 # 🎰 Lumen Lottery
 
 <p align="center">
-  <img src="./lumen-lottery/assets/images/icon.png" alt="Lumen Lottery Logo" width="120"/>
+  <img src="https://www.tiffanylightingdirect.co.uk/products/searchlight-polished-brass-finish-2-light-picture-light-with-adjustable-knuckle-joint" alt="Lumen Lottery Logo" width="120"/>
 </p>
 
 <h3 align="center">
@@ -9,7 +9,7 @@
 </h3>
 
 <p align="center">
-  <strong>🏆 Hack&Roll 2026 - Most Useless Hack</strong>
+  <strong>🏆 Hack&Roll 2026</strong>
 </p>
 
 ---

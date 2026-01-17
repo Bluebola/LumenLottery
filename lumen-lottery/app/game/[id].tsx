@@ -26,6 +26,7 @@ import NonlinearSliderGame from '@/src/minigames/NonlinearSliderGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
 import MinesGame from '@/src/minigames/mines';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
+import FreezeFrameGame from '@/src/minigames/FreezeFrameGame';
 
 // Game ID to component mapping
 const GAMES: Record<string, React.ComponentType<any>> = {
@@ -52,6 +53,7 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   mines: MinesGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
+  freezeframe: FreezeFrameGame,
 };
 
 // Rate limiting for brightness updates

@@ -189,9 +189,7 @@ lumen-lottery/
 
 ---
 
-## 🏆 Why "Most Useless Hack"?
-
-Because we took something simple (adjusting screen brightness) and made it:
+We took something simple (adjusting screen brightness) and made it:
 - ❌ Unnecessarily complicated
 - ❌ Physically demanding
 - ❌ Psychologically damaging
@@ -202,14 +200,3 @@ Because we took something simple (adjusting screen brightness) and made it:
 
 ---
 
-## 📜 License
-
-MIT License - Do whatever you want with this chaos.
-
----
-
-<p align="center">
-  <em>Crafted with 💡 and questionable decisions</em>
-  <br/>
-  <strong>© 2026 Team Lumen Lottery</strong>
-</p>

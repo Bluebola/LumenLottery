@@ -19,7 +19,7 @@ const GAME_CATEGORIES = [
       { id: 'snake', name: 'Snake', emoji: '🐍', desc: 'Snake length = brightness', color: '#2ecc71' },
       { id: 'flappy', name: 'Flappy Bright', emoji: '🐦', desc: 'Pipes passed = +5% brightness', color: '#3498db' },
       { id: 'tetris', name: 'Tetris Lux', emoji: '🧱', desc: 'Stack height = brightness', color: '#9b59b6' },
-      { id: 'pong', name: 'Pong the Sun', emoji: '🏓', desc: 'Ball height = brightness', color: '#e67e22' },
+      { id: 'pintail', name: 'Pin the Picture', emoji: '📍', desc: 'Pure luck guessing = brightness', color: '#e67e22' },
     ]
   },
   {
@@ -59,7 +59,14 @@ const GAME_CATEGORIES = [
     ]
   },
   {
-    title: '🤡 Psychological Damage',
+    title: '� Puzzle & Logic',
+    subtitle: 'Brain teasers for light',
+    games: [
+      { id: 'applesum', name: 'Apple Sum Puzzle', emoji: '🍎🔢', desc: 'Lasso apples summing to 10', color: '#e74c3c' },
+    ]
+  },
+  {
+    title: '�🤡 Psychological Damage',
     subtitle: 'We are sorry in advance',
     games: [
       { id: 'peer', name: 'Peer Pressure', emoji: '😰', desc: '"Are you SURE?"', color: '#e74c3c' },

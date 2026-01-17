@@ -9,7 +9,7 @@ import SeesawGame from '@/src/minigames/SeesawGame';
 import SlotMachineGame from '@/src/minigames/SlotMachineGame';
 import FlappyBrightGame from '@/src/minigames/FlappyBrightGame';
 import TetrisLuxGame from '@/src/minigames/TetrisLuxGame';
-import PongSunGame from '@/src/minigames/PongSunGame';
+import PinTheTailGame from '@/src/minigames/PinTheTailGame';
 import BallInBoxGame from '@/src/minigames/BallInBoxGame';
 import PendulumGame from '@/src/minigames/PendulumGame';
 import RouletteGame from '@/src/minigames/RouletteGame';
@@ -26,13 +26,14 @@ import NonlinearSliderGame from '@/src/minigames/NonlinearSliderGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
 import MinesGame from '@/src/minigames/mines';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
+import AppleSumGame from '@/src/minigames/AppleSumGame';
 
 // Game ID to component mapping
 const GAMES: Record<string, React.ComponentType<any>> = {
   snake: SnakeGame,
   flappy: FlappyBrightGame,
   tetris: TetrisLuxGame,
-  pong: PongSunGame,
+  pintail: PinTheTailGame,
   seesaw: SeesawGame,
   ballinbox: BallInBoxGame,
   pendulum: PendulumGame,
@@ -52,6 +53,7 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   mines: MinesGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
+  applesum: AppleSumGame,
 };
 
 // Rate limiting for brightness updates

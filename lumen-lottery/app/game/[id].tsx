@@ -77,7 +77,7 @@ export default function GameScreen() {
   // Handle exit from minigame
   const handleExit = useCallback(async () => {
     await restoreBrightness();
-    router.back();
+    router.replace('/');
   }, [router]);
 
   // Get the game component
@@ -88,7 +88,7 @@ export default function GameScreen() {
       <View style={styles.errorContainer}>
         <Text style={styles.errorEmoji}>🤷</Text>
         <Text style={styles.errorText}>Game not found: {id}</Text>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.replace('/')}>
           <Text style={styles.backButtonText}>← Go Back</Text>
         </TouchableOpacity>
       </View>

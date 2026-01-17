@@ -92,7 +92,7 @@ export default function MinesGame({ onBrightnessChange, onExit }: MinigameProps)
       setCells(newCells);
       setGameOver(true);
       onBrightnessChange(MIN_BRIGHTNESS);
-      setTimeout(() => onExit(), 1200);
+      // Stay on game page - don't auto-exit
     } else {
       setCells(newCells);
     }
@@ -116,9 +116,7 @@ export default function MinesGame({ onBrightnessChange, onExit }: MinigameProps)
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onExit} style={styles.exitButton}>
-          <Text style={styles.exitText}>Exit</Text>
-        </TouchableOpacity>
+        
         <Text style={styles.title}>Mine Sweeper</Text>
         <Text style={styles.stats}>
           {safeRevealed}/{totalSafeCells}

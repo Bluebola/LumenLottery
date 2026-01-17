@@ -1,8 +1,5 @@
 # 🎰 Lumen Lottery
 
-<p align="center">
-  <img src="https://www.tiffanylightingdirect.co.uk/products/searchlight-polished-brass-finish-2-light-picture-light-with-adjustable-knuckle-joint" alt="Lumen Lottery Logo" width="120"/>
-</p>
 
 <h3 align="center">
   <em>Because adjusting brightness should never be easy.</em>

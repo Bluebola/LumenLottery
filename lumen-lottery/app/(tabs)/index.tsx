@@ -82,7 +82,8 @@ const GAME_CATEGORIES = [
       { id: 'voice', name: 'Voice Shout', emoji: '🎤', desc: 'SCREAM for brightness!', color: '#e74c3c' },
       { id: 'clap', name: 'Clap-to-Brighten', emoji: '👏', desc: 'Mic controls brightness', color: '#3498db' },
       { id: 'scroll', name: 'Scroll Wheel', emoji: '🖱️', desc: 'Scroll speed = brightness', color: '#8e44ad' },
-      { id: 'typing', name: 'Typing Speed', emoji: '⌨️', desc: 'WPM = brightness', color: '#2ecc71' },
+      { id: 'typeracer', name: 'Type Racer', emoji: '⌨️', desc: 'WPM = brightness', color: '#2ecc71' },
+      { id: 'mines', name: 'Mine Sweeper', emoji: '💣', desc: 'Click safely to brighten', color: '#e74c3c' },
     ]
   },
 ];

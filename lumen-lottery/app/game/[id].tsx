@@ -30,6 +30,7 @@ import ClapToBrightenGame from '@/src/minigames/ClapToBrightenGame';
 import ScrollWheelGame from '@/src/minigames/ScrollWheelGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
+import MinesGame from '@/src/minigames/mines';
 
 // Game ID to component mapping
 const GAMES: Record<string, React.ComponentType<any>> = {
@@ -59,6 +60,8 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   scroll: ScrollWheelGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
+  typeracer: TypingSpeedGame,
+  mines: MinesGame,
 };
 
 // Rate limiting for brightness updates

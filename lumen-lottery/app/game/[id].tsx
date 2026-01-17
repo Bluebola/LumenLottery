@@ -24,6 +24,7 @@ import PeerPressureGame from '@/src/minigames/PeerPressureGame';
 import InvisibleSliderGame from '@/src/minigames/InvisibleSliderGame';
 import NonlinearSliderGame from '@/src/minigames/NonlinearSliderGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
+import MinesGame from '@/src/minigames/mines';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
 
 // Game ID to component mapping
@@ -47,6 +48,8 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   peer: PeerPressureGame,
   invisible: InvisibleSliderGame,
   nonlinear: NonlinearSliderGame,
+  typeracer: TypingSpeedGame,
+  mines: MinesGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
 };

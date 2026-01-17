@@ -78,7 +78,8 @@ const GAME_CATEGORIES = [
     subtitle: 'Why does this exist?',
     games: [
       { id: 'voice', name: 'Voice Shout', emoji: '🎤', desc: 'SCREAM for brightness!', color: '#e74c3c' },
-      { id: 'typing', name: 'Typing Speed', emoji: '⌨️', desc: 'WPM = brightness', color: '#2ecc71' },
+      { id: 'typeracer', name: 'Type Racer', emoji: '⌨️', desc: 'WPM = brightness', color: '#2ecc71' },
+      { id: 'mines', name: 'Mine Sweeper', emoji: '💣', desc: 'Click safely to brighten', color: '#e74c3c' },
     ]
   },
 ];

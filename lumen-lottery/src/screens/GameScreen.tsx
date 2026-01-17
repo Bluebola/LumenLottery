@@ -9,6 +9,7 @@ import { setBrightness, restoreBrightness } from '../brightness/brightnessContro
 import SnakeGame from '../minigames/SnakeGame';
 import SeesawGame from '../minigames/SeesawGame';
 import SlotMachineGame from '../minigames/SlotMachineGame';
+import FlappyBrightGame from '../minigames/FlappyBrightGame';
 
 interface GameScreenProps {
   // TODO: Get from navigation params
@@ -53,6 +54,8 @@ export default function GameScreen({ gameId = 'snake' }: GameScreenProps) {
         return <SeesawGame {...props} />;
       case 'slots':
         return <SlotMachineGame {...props} />;
+      case 'flappybright':
+        return <FlappyBrightGame {...props} />;
       default:
         return <SnakeGame {...props} />;
     }

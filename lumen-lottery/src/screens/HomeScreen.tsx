@@ -38,6 +38,13 @@ const MINIGAMES: GameCard[] = [
     description: 'Gamble your eyesight',
     developer: 'TBD',
   },
+  {
+    id: 'flappybright',
+    name: 'Flappy Bright',
+    emoji: '🐦',
+    description: 'Your death score = Brightness %',
+    developer: 'Lumen Lottery Team',
+  },
 ];
 
 export default function HomeScreen() {

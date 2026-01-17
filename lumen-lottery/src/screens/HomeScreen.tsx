@@ -18,6 +18,20 @@ interface GameCard {
 // Add your minigames here!
 const MINIGAMES: GameCard[] = [
   {
+    id: 'typeracer',
+    name: 'Type Racer',
+    emoji: '⌨️',
+    description: 'WPM controls brightness',
+    developer: 'Ethan',
+  },
+  {
+    id: 'mines',
+    name: 'Mine Sweeper',
+    emoji: '💣',
+    description: 'Click safely to brighten',
+    developer: 'Ethan',
+  },
+  {
     id: 'snake',
     name: 'Snake',
     emoji: '🐍',

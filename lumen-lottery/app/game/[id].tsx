@@ -21,14 +21,10 @@ import CountdownGame from '@/src/minigames/CountdownGame';
 import HoldToGlowGame from '@/src/minigames/HoldToGlowGame';
 import AFKBrightnessGame from '@/src/minigames/AFKBrightnessGame';
 import PeerPressureGame from '@/src/minigames/PeerPressureGame';
-import MoodSelectorGame from '@/src/minigames/MoodSelectorGame';
-import LieDetectorGame from '@/src/minigames/LieDetectorGame';
 import InvisibleSliderGame from '@/src/minigames/InvisibleSliderGame';
-import ReverseSliderGame from '@/src/minigames/ReverseSliderGame';
 import NonlinearSliderGame from '@/src/minigames/NonlinearSliderGame';
-import ClapToBrightenGame from '@/src/minigames/ClapToBrightenGame';
-import ScrollWheelGame from '@/src/minigames/ScrollWheelGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
+import MinesGame from '@/src/minigames/mines';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
 
 // Game ID to component mapping
@@ -50,13 +46,10 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   hold: HoldToGlowGame,
   afk: AFKBrightnessGame,
   peer: PeerPressureGame,
-  mood: MoodSelectorGame,
-  lie: LieDetectorGame,
   invisible: InvisibleSliderGame,
-  reverse: ReverseSliderGame,
   nonlinear: NonlinearSliderGame,
-  clap: ClapToBrightenGame,
-  scroll: ScrollWheelGame,
+  typeracer: TypingSpeedGame,
+  mines: MinesGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
 };

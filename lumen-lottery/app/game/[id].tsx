@@ -29,6 +29,7 @@ import NonlinearSliderGame from '@/src/minigames/NonlinearSliderGame';
 import ClapToBrightenGame from '@/src/minigames/ClapToBrightenGame';
 import ScrollWheelGame from '@/src/minigames/ScrollWheelGame';
 import TypingSpeedGame from '@/src/minigames/TypingSpeedGame';
+import MinesGame from '@/src/minigames/mines';
 import VoiceShoutGame from '@/src/minigames/VoiceShoutGame';
 
 // Game ID to component mapping
@@ -57,6 +58,8 @@ const GAMES: Record<string, React.ComponentType<any>> = {
   nonlinear: NonlinearSliderGame,
   clap: ClapToBrightenGame,
   scroll: ScrollWheelGame,
+  typeracer: TypingSpeedGame,
+  mines: MinesGame,
   typing: TypingSpeedGame,
   voice: VoiceShoutGame,
 };

@@ -1,11 +1,13 @@
 // Typing Speed Lux Game
-// Type faster to brighten the screen
+// Type faster to brighten the screen with dynamic challenges
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { MinigameProps } from '../types/Minigame';
 
 type PromptLength = 'short' | 'medium' | 'long';
+type Difficulty = 'Normal' | 'Hard' | 'Chaos';
+type Challenge = 'none' | 'caps-lock' | 'reversed' | 'spaces' | 'numbers';
 
 const PROMPTS: Record<PromptLength, string[]> = {
   short: [
@@ -38,9 +40,34 @@ const MAX_WPM = 140;
 const MIN_BRIGHTNESS = 0.02;
 const IDLE_DECAY_PER_SECOND = 40; // higher = faster brightness drop when idle
 
+const DIFFICULTY_SETTINGS: Record<Difficulty, { minWPM: number; challengeFreq: number; penalty: number }> = {
+  Normal: { minWPM: 0, challengeFreq: 0, penalty: 1 },
+  Hard: { minWPM: 40, challengeFreq: 0.5, penalty: 2 },
+  Chaos: { minWPM: 60, challengeFreq: 1, penalty: 3 },
+};
+
 function randomPrompt(length: PromptLength): string {
   const pool = PROMPTS[length];
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function applyChallenge(text: string, challenge: Challenge): string {
+  if (challenge === 'none') return text;
+  if (challenge === 'caps-lock') return text.toUpperCase();
+  if (challenge === 'reversed') return text.split('').reverse().join('');
+  if (challenge === 'spaces') return text.split('').join(' ');
+  if (challenge === 'numbers') {
+    const numMap: Record<string, string> = {
+      'a': '4', 'e': '3', 'i': '1', 'o': '0', 's': '5', 't': '7', 'l': '1', 'g': '9'
+    };
+    return text.toLowerCase().split('').map(c => numMap[c] || c).join('');
+  }
+  return text;
+}
+
+function getRandomChallenge(): Challenge {
+  const challenges: Challenge[] = ['none', 'caps-lock', 'reversed', 'spaces', 'numbers'];
+  return challenges[Math.floor(Math.random() * challenges.length)];
 }
 
 function mapWpmToBrightness(wpm: number): number {
@@ -50,13 +77,20 @@ function mapWpmToBrightness(wpm: number): number {
 
 export default function TypingSpeedGame({ onBrightnessChange, onExit }: MinigameProps) {
   const [promptLength, setPromptLength] = useState<PromptLength>('medium');
+  const [difficulty, setDifficulty] = useState<Difficulty>('Normal');
   const [prompt, setPrompt] = useState<string>(() => randomPrompt('medium'));
+  const [challenge, setChallenge] = useState<Challenge>('none');
   const [input, setInput] = useState('');
   const [startTime, setStartTime] = useState<number | null>(null);
   const [wpm, setWpm] = useState(0);
   const [bestWpm, setBestWpm] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [mistakesOnThisPrompt, setMistakesOnThisPrompt] = useState(0);
+  const [warnings, setWarnings] = useState<string>('');
   const inputRef = useRef<TextInput | null>(null);
   const lastInputRef = useRef<number | null>(null);
+  const lastWpmRef = useRef(0);
 
   const calculateWpm = useCallback((text: string, startedAt: number | null) => {
     if (!startedAt || text.length === 0) return 0;
@@ -65,10 +99,10 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
     return Math.max(0, Math.round((wordsTyped / elapsedMinutes) * 10) / 10);
   }, []);
 
-  const completed = input === prompt && prompt.length > 0;
+  const isCompleted = input === prompt && prompt.length > 0;
 
   useEffect(() => {
-    if (completed) return undefined;
+    if (isCompleted) return undefined;
     const id = setInterval(() => {
       const base = calculateWpm(input, startTime);
       const idleSeconds = lastInputRef.current ? (Date.now() - lastInputRef.current) / 1000 : 0;
@@ -76,7 +110,7 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
       setWpm(Math.round(decayed * 10) / 10);
     }, 400);
     return () => clearInterval(id);
-  }, [calculateWpm, input, startTime, completed]);
+  }, [calculateWpm, input, startTime, isCompleted]);
 
   useEffect(() => {
     setBestWpm((prev) => Math.max(prev, wpm));
@@ -89,36 +123,75 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
   }, []);
 
   const handleChange = (text: string) => {
-    if (text.length > prompt.length) return;
+    const displayPrompt = applyChallenge(prompt, challenge);
+    if (text.length > displayPrompt.length) return;
     if (!startTime && text.length > 0) {
       setStartTime(Date.now());
     }
     lastInputRef.current = Date.now();
     setInput(text);
     setWpm(calculateWpm(text, startTime ?? Date.now()));
+
+    // Check for mistakes
+    let newMistakes = 0;
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] !== displayPrompt[i]) newMistakes++;
+    }
+    setMistakesOnThisPrompt(newMistakes);
+
+    // Check if WPM is below difficulty minimum
+    const currentWpm = calculateWpm(text, startTime ?? Date.now());
+    lastWpmRef.current = currentWpm;
+    if (currentWpm > 0 && currentWpm < DIFFICULTY_SETTINGS[difficulty].minWPM) {
+      setWarnings('⚠️ Type faster to keep up!');
+    } else {
+      setWarnings('');
+    }
   };
 
   const handleReset = (length: PromptLength = promptLength) => {
     setPromptLength(length);
-    setPrompt(randomPrompt(length));
+    const newPrompt = randomPrompt(length);
+    setPrompt(newPrompt);
+    
+    // Randomly apply challenge
+    if (Math.random() < DIFFICULTY_SETTINGS[difficulty].challengeFreq) {
+      const newChallenge = getRandomChallenge();
+      setChallenge(newChallenge);
+    } else {
+      setChallenge('none');
+    }
+
     setInput('');
     setStartTime(null);
     setWpm(0);
     lastInputRef.current = null;
+    setMistakesOnThisPrompt(0);
+
+    // Handle streak
+    if (isCompleted && mistakesOnThisPrompt === 0) {
+      setStreak(streak + 1);
+      setCompletedCount(completedCount + 1);
+    } else if (isCompleted && mistakesOnThisPrompt > 0) {
+      setStreak(0);
+      setCompletedCount(completedCount + 1);
+    }
   };
 
   const progress = useMemo(() => Math.min(input.length / prompt.length, 1), [input.length, prompt.length]);
 
   const mismatchIndex = useMemo(() => {
-    for (let i = 0; i < input.length && i < prompt.length; i++) {
-      if (input[i] !== prompt[i]) return i;
+    const displayPrompt = applyChallenge(prompt, challenge);
+    for (let i = 0; i < input.length && i < displayPrompt.length; i++) {
+      if (input[i] !== displayPrompt[i]) return i;
     }
     return -1;
-  }, [input, prompt]);
+  }, [input, prompt, challenge]);
 
-  const correctPortion = prompt.slice(0, mismatchIndex === -1 ? Math.min(input.length, prompt.length) : mismatchIndex);
-  const errorPortion = mismatchIndex === -1 ? '' : prompt.slice(mismatchIndex, Math.min(input.length, prompt.length));
-  const remainingPortion = prompt.slice(Math.min(input.length, prompt.length));
+  const displayPrompt = applyChallenge(prompt, challenge);
+  const correctPortion = displayPrompt.slice(0, mismatchIndex === -1 ? Math.min(input.length, displayPrompt.length) : mismatchIndex);
+  const errorPortion = mismatchIndex === -1 ? '' : displayPrompt.slice(mismatchIndex, Math.min(input.length, displayPrompt.length));
+  const remainingPortion = displayPrompt.slice(Math.min(input.length, displayPrompt.length));
 
   const accuracy = useMemo(() => {
     if (input.length === 0) return 100;
@@ -128,24 +201,38 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
   }, [input.length, mismatchIndex]);
 
   useEffect(() => {
-    if (!completed) return undefined;
+    if (!isCompleted) return undefined;
     const finalBrightness = mapWpmToBrightness(wpm);
     onBrightnessChange(finalBrightness);
-    const timeout = setTimeout(onExit, 700);
-    return () => clearTimeout(timeout);
-  }, [completed, wpm, onBrightnessChange, onExit]);
+    // Stay on game page - don't auto-exit
+  }, [isCompleted, wpm, onBrightnessChange]);
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
         <Text style={styles.title}>Type Racer Lux</Text>
-        <TouchableOpacity onPress={onExit} style={styles.exitButton}>
-          <Text style={styles.exitText}>Exit</Text>
-        </TouchableOpacity>
+      </View>
+
+      <View style={styles.topStats}>
+        <View style={styles.statBox}>
+          <Text style={styles.statBoxLabel}>Streak</Text>
+          <Text style={[styles.statBoxValue, streak > 0 && styles.streakActive]}>{streak}🔥</Text>
+        </View>
+        <View style={styles.statBox}>
+          <Text style={styles.statBoxLabel}>Difficulty</Text>
+          <Text style={styles.statBoxValue}>{difficulty}</Text>
+        </View>
+        <View style={styles.statBox}>
+          <Text style={styles.statBoxLabel}>Completed</Text>
+          <Text style={styles.statBoxValue}>{completedCount}</Text>
+        </View>
       </View>
 
       <View style={styles.promptCard}>
         <Text style={styles.label}>Prompt</Text>
+        {challenge !== 'none' && (
+          <Text style={styles.challengeIndicator}>Challenge: {challenge.replace('-', ' ').toUpperCase()}</Text>
+        )}
         <Text style={styles.promptText}>
           <Text style={styles.correctText}>{correctPortion}</Text>
           <Text style={styles.errorText}>{errorPortion}</Text>
@@ -189,6 +276,22 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
         ))}
       </View>
 
+      <View style={styles.difficultyRow}>
+        {(['Normal', 'Hard', 'Chaos'] as Difficulty[]).map((diff) => (
+          <TouchableOpacity
+            key={diff}
+            onPress={() => setDifficulty(diff)}
+            style={[styles.difficultyChip, difficulty === diff && styles.difficultyChipActive]}
+          >
+            <Text style={[styles.difficultyChipText, difficulty === diff && styles.difficultyChipTextActive]}>
+              {diff}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      {warnings && <Text style={styles.warning}>{warnings}</Text>}
+
       <TextInput
         ref={inputRef}
         style={styles.input}
@@ -208,13 +311,13 @@ export default function TypingSpeedGame({ onBrightnessChange, onExit }: Minigame
         </Text>
         <View style={styles.footerButtons}>
           <TouchableOpacity onPress={() => handleReset(promptLength)} style={styles.secondaryButton}>
-            <Text style={styles.secondaryButtonText}>{completed ? 'New Prompt' : 'Shuffle'}</Text>
+            <Text style={styles.secondaryButtonText}>{isCompleted ? 'New Prompt' : 'Shuffle'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setInput('')} style={styles.secondaryButton}>
             <Text style={styles.secondaryButtonText}>Clear</Text>
           </TouchableOpacity>
         </View>
-        {completed && <Text style={styles.success}>Prompt complete! Tap New Prompt to race again.</Text>}
+        {isCompleted && <Text style={styles.success}>Prompt complete! Tap New Prompt to race again.</Text>}
       </View>
     </View>
   );
@@ -237,6 +340,35 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 22,
     fontWeight: 'bold',
+  },
+  topStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 12,
+    gap: 8,
+  },
+  statBox: {
+    flex: 1,
+    backgroundColor: '#121a33',
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 6,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#1f2b4a',
+  },
+  statBoxLabel: {
+    color: '#7f9cc4',
+    fontSize: 11,
+    marginBottom: 3,
+  },
+  statBoxValue: {
+    color: '#ffd54f',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  streakActive: {
+    color: '#ff6b6b',
   },
   exitButton: {
     paddingHorizontal: 12,
@@ -263,6 +395,17 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     marginBottom: 6,
     textTransform: 'uppercase',
+  },
+  challengeIndicator: {
+    color: '#ff6b6b',
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    backgroundColor: '#2a1818',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
   },
   promptText: {
     color: '#b7c8e8',
@@ -322,6 +465,42 @@ const styles = StyleSheet.create({
   },
   lengthChipTextActive: {
     color: '#0f0f23',
+  },
+  difficultyRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+    gap: 8,
+  },
+  difficultyChip: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    backgroundColor: '#1f2b4a',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#23345f',
+    alignItems: 'center',
+  },
+  difficultyChipActive: {
+    backgroundColor: '#ff6b6b',
+    borderColor: '#ff6b6b',
+  },
+  difficultyChipText: {
+    color: '#b7c8e8',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  difficultyChipTextActive: {
+    color: '#fff',
+  },
+  warning: {
+    color: '#ff6b6b',
+    fontSize: 13,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
   },
   stat: {
     flex: 1,
